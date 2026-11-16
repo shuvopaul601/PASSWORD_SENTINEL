@@ -1,0 +1,38 @@
+name: Build desktop apps
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: PasswordSentinel-Windows
+          - os: ubuntu-latest
+            artifact: PasswordSentinel-Linux
+          - os: macos-latest
+            artifact: PasswordSentinel-macOS
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt pyinstaller
+      - name: Build Windows executable folder
+        if: runner.os == 'Windows'
+        run: python -m PyInstaller --noconfirm --clean --windowed --name PasswordSentinel --collect-all zxcvbn gui_entry.py
+      - name: Build Linux executable folder
+        if: runner.os == 'Linux'
+        run: python -m PyInstaller --noconfirm --clean --windowed --name PasswordSentinel --collect-all zxcvbn gui_entry.py
+      - name: Build macOS application bundle
+        if: runner.os == 'macOS'
+        run: python -m PyInstaller --noconfirm --clean --windowed --name PasswordSentinel --osx-bundle-identifier com.passwordsentinel.desktop --collect-all zxcvbn gui_entry.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/PasswordSentinel*
