@@ -1,0 +1,20 @@
+Password Sentinel 3.1.0 — UI layout fix
+
+Fixed:
+- QLabel widgets now use transparent backgrounds, preventing opaque dark/black
+  rectangles from covering the card surfaces behind text.
+- Every workspace page is hosted in a resizable QScrollArea. This prevents
+  controls and text from being compressed or clipped when the window is
+  maximized, restored, or resized to a smaller display.
+- Improved text input minimum sizing and vertical scrollbar styling.
+- Reduced the minimum window dimensions to 900 x 620.
+
+Preserved:
+- Password analysis and breach lookup functionality.
+- Wordlist generation and batch audit workflows.
+- SQLite assessment history and report exports.
+- Existing CLI commands.
+
+Run on Windows:
+  python -m pip install -r requirements.txt
+  python cli.py gui

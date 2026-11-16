@@ -1,0 +1,3 @@
+PyQt6>=6.6.0
+zxcvbn>=4.4.28
+requests>=2.31.0  # only needed for optional Have I Been Pwned lookup
